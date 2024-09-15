@@ -130,7 +130,7 @@
               <tr  class="w-full">
                 <!-- Insérer ici les données spécifiques de chaque item -->
                 <td spellcheck="false" class="statut nopad baseWidth" :class="item.tag" :style="{ width: item.name.length * 9 + 'px'}"><input class="w-full" v-model="item.name" @input="saveDataLocally(table.id)" placeholder="Nom du jeu" :class="{ 'highlight': shouldHighlight(item.name, false) }" /></td>
-                <td v-if="columnVisibility.showPrixPaye" class="currency">{{ calculatePrixPaye(table.cout, table.items.length) }}</td>
+                <td v-if="columnVisibility.showPrixPaye" class="currency">{{ calculatePrixPaye(table.cout, table.filteredItems.length) }}</td>
                 <td v-if="columnVisibility.showPrixBasMarche" class="nopad currency"><input class="w-full" v-model="item.prixbasmarche" @input="fixDecimalSeparator(table.id, rowIndex, 'prixbasmarche')" placeholder="......" /></td>
                 <td v-if="columnVisibility.showPrixBas" class="nopad currency"><input class="w-full" v-model="item.prixbas" @input="fixDecimalSeparator(table.id, rowIndex, 'prixbas')" placeholder="......"/></td>
                 <td v-if="columnVisibility.showPrixHorsSoldes" class="nopad currency"><input class="w-full" v-model="item.prixHorsSoldes"  @input="fixDecimalSeparator(table.id, rowIndex, 'prixHorsSoldes')" placeholder="......"/></td>
@@ -176,7 +176,7 @@
               <tr v-for="(item, rowIndex) in table.filteredItems" :key="rowIndex" >
                 <td class="draghandle"></td>
                 <td spellcheck="false" class="statut nopad baseWidth" :class="item.tag" :style="{ width: item.name.length * 9 + 'px'}"><input class="w-full" v-model="item.name" @input="saveDataLocally(table.id)" placeholder="Nom du jeu" :class="{ 'highlight': shouldHighlight(item.name, false) }" /></td>
-                <td v-if="columnVisibility.showPrixPaye" class="currency">{{ calculatePrixPaye(table.cout, table.items.length) }}</td>
+                <td v-if="columnVisibility.showPrixPaye" class="currency">{{ calculatePrixPaye(table.cout, table.filteredItems.length) }}</td>
                 <td v-if="columnVisibility.showPrixBasMarche" class="nopad currency"><input class="w-full" v-model="item.prixbasmarche" @input="fixDecimalSeparator(table.id, rowIndex, 'prixbasmarche')" placeholder="......" /></td>
                 <td v-if="columnVisibility.showPrixBas" class="nopad currency"><input class="w-full" v-model="item.prixbas" @input="fixDecimalSeparator(table.id, rowIndex, 'prixbas')" placeholder="......"/></td>
                 <td v-if="columnVisibility.showPrixHorsSoldes" class="nopad currency"><input class="w-full" v-model="item.prixHorsSoldes"  @input="fixDecimalSeparator(table.id, rowIndex, 'prixHorsSoldes')" placeholder="......"/></td>
