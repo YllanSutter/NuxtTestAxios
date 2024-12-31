@@ -52,7 +52,17 @@ export default {
       target: 'https://api.steampowered.com',
       pathRewrite: { '^/api/steam': '' },
       changeOrigin: true,
-    }
+    },
+    '/api/store': {
+      target: 'https://store.steampowered.com',
+      pathRewrite: { '^/api/store': '' },
+      changeOrigin: true,
+    },
+    '/api/ggdeals': {
+      target: 'https://gg.deals/api',
+      pathRewrite: { '^/api/ggdeals': '' },
+      changeOrigin: true,
+    },
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

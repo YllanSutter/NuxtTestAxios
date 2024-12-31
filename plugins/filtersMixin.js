@@ -278,6 +278,30 @@ export default {
     toggleDisplayMode() {
       this.showTableInOne = !this.showTableInOne;
     },
+    handleSelectionChange({ type, value }) {
+      switch(type) {
+        case 'Plateforme':
+          this.selectedPlateforme = value;
+          break;
+        case 'Month':
+          this.selectedMonth = value;
+          break;
+        case 'Year':
+          this.selectedYear = value;
+          break;
+        case 'Tag':
+          this.selectedTag = value;
+          this.filterByTag(value);
+          break;
+        case 'SearchText':
+          this.searchText = value;
+          break;
+        case 'ColumnVisibility':
+          this.columnVisibility = value;
+          break;
+      }
+      this.filterTables(); // Appliquez le filtrage après chaque changement
+    }
     
   },
   computed: {

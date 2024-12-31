@@ -1,75 +1,42 @@
 <template>
   <div>
-    <!-- Filtre pour sélectionner les mois à afficher -->
-    <div class="noborder p-5 justify-center max-w-screen-2xl mx-auto p-5 text-white text-center"> 
-      <select v-model="selectedPlateforme" @change="filterTables">
-        <option value="tous">toutes les plateformes</option>
-        <option v-for="plateforme in plateformes" :key="plateforme" :value="plateforme">{{ plateforme }}</option>
-      </select>
-
-      <select v-model="selectedMonth" @change="filterTables">
-        <option value="tous">tous les mois</option>
-        <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
-      </select>
-
-      <select v-model="selectedYear" @change="filterTables">
-        <option value="tous">toutes les années</option>
-        <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-      </select>
-
-      <select v-model="selectedTag" @change="filterByTag">
-        <option value="tous">Tous les tags</option>
-        <option v-for="tag in TagsList" :key="tag" :value="tag">{{ tag }}</option>
-      </select>
-      
-      <input class="inputGap" v-model="searchText" @input="filterTables" placeholder="Rechercher..." />
-    </div>
-
-  <!-- Filtre pour sélectionner ce qu'on affiche -->
-    <div class="posfix checkboxTableauCalculator  text-white ">
-    <div class="absBundle nopad affichageWrapChoix" @click="toggleWrapChoix">
-      <p class="bg-green-500 p-5">Plus d'options</p>
-    </div>
-    <div class="wrapChoix bg-gray-900 grid p-10" v-show="isWrapChoixVisible">
-      <!-- Checkbox -->
-      <select v-model="selectedPlateforme" @change="filterTables">
-        <option value="tous">toutes les plateformes</option>
-        <option v-for="plateforme in plateformes" :key="plateforme" :value="plateforme">{{ plateforme }}</option>
-      </select>
-
-      <select v-model="selectedMonth" @change="filterTables">
-        <option value="tous">tous les mois</option>
-        <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
-      </select>
-
-      <select v-model="selectedYear" @change="filterTables">
-        <option value="tous">toutes les années</option>
-        <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-      </select>
-      
-      <!-- Sélection des tags -->
-      <select v-model="selectedTag" @change="filterByTag">
-        <option value="tous">Tous les tags</option>
-        <option v-for="tag in TagsList" :key="tag" :value="tag">{{ tag }}</option>
-      </select>
-
-      <input class="inputGap" v-model="searchText" @input="filterTables" placeholder="Rechercher..." />
-
-      <div  v-for="column in columnsCreate" :key="column[0]">
-        <div class="checkbox-wrapper">
-          <input type="checkbox" :id="'cbx-' + column[0]" class="inp-cbx" v-model="columnVisibility[column[0]]" @click="toggleColumn(column[0])" style="display:none"/>
-          <label :for="'cbx-' + column[0]" class="cbx">
-            <span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9"> <polyline points="1 5 4 8 11 1"></polyline></svg></span>
-            <span class="label-text">{{ column[1] }}</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="checkbox-wrapper"> <input type="checkbox" id="tab-cbx-2" class="inp-cbx" v-model="columnVisibility.showTableInOne" @click="toggleDisplayMode" style="display:none"/><label class="cbx" for="tab-cbx-2"><span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9"><polyline points="1 5 4 8 11 1"></polyline></svg></span><span class="label-text">Un seul tableau</span></label></div>
-      <div v-if="!showTableInOne" class="checkbox-wrapper"><input type="checkbox" id="tab-cbx-1" class="inp-cbx" v-model="columnVisibility.hideAllElements" @click="hideAllElements()" style="display:none"/><label class="cbx" for="tab-cbx-1"><span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9"><polyline points="1 5 4 8 11 1"></polyline></svg></span><span class="label-text">Réduire les tableaux</span></label></div>
-      
-    </div>
-  </div>
+    <MoreOptions
+      :options="{
+        plateformes,
+        months,
+        years,
+        TagsList,
+        selectedPlateforme,
+        selectedMonth,
+        selectedYear,
+        selectedTag,
+        searchText,
+      }"
+      @filter-tables="filterTables"
+      @filter-by-tag="filterByTag"
+      @hide-all-elements="hideAllElements"
+      @selection-change="handleSelectionChange"
+    />
+    <MoreOptions
+      :options="{
+        plateformes,
+        months,
+        years,
+        TagsList,
+        selectedPlateforme,
+        selectedMonth,
+        selectedYear,
+        selectedTag,
+        searchText,
+        columnVisibility,
+        columnsCreate,
+        showTableInOne,
+      }"
+      @filter-tables="filterTables"
+      @filter-by-tag="filterByTag"
+      @hide-all-elements="hideAllElements"
+      @selection-change="handleSelectionChange"
+    />
 
     <!-- Tableau pour afficher le total de tous les totaux -->
     <table v-if="!columnVisibility.UncheckAll" class="justify-center max-w-screen-2xl mx-auto p-5 text-white selectableTable">
@@ -251,12 +218,14 @@
   import draggable from 'vuedraggable';
   import { saveData, loadData } from '~/data/dataHandler';
   import filtersMixin from '~/plugins/filtersMixin.js';
+  import MoreOptions from './moreOptions.vue'
 
   
   export default {
   mixins: [filtersMixin],
     components: {
       draggable, // Ajoutez le composant vuedraggable
+      MoreOptions
     },
     data() {
       return {
@@ -280,7 +249,7 @@
           "Autres", "Steam", "Fanatical", "Humble"
         ],
         years: [
-          2023,2024,2025
+          '2023','2024','2025'
         ],
         hideElementsVisible: true,
         searchText: '',

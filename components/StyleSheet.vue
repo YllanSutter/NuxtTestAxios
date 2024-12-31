@@ -108,8 +108,8 @@
     }
     .nbjeux::after
     {
-        content: "jeux";
-        right: 10Px;
+        content: " jeux";
+        right: 8Px;
     }
     tr:last-child>td
     {
@@ -531,4 +531,58 @@
     .barlines>*:nth-child(4){top: 75%;}
     .barlines>*:nth-child(5){top: 100%;}
 
+    /* Tierlist */
+    .game-item
+    {
+        display: grid;
+        align-items: start;
+        align-content: start;
+        margin-bottom: 10px;
+        gap: 10px;
+        text-align: center;
+        justify-content: center;
+        justify-items: center;
+        position: relative;
+        cursor: grab;
+    }
+    
+    .game-icon {
+        --size:100%;
+        --maxsize:100px;
+        width: var(--size);
+        height: var(--size);
+        max-height: var(--maxsize);
+    }
+    .hovered
+    {
+        position: absolute;
+        background: #010f1e90;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+        width: 120%;
+        font-size: 14px;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        pointer-events: none;
+    }
+    .tier
+    {
+        position: relative;
+        border-bottom: 1Px solid #010f1e90;
+    }
+    .tier h3
+    {
+        position: absolute;
+        top:50%;
+        transform:translateY(-50%);
+        left: 10px;
+    }
+    .hovered {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    .game-item:hover .hovered {
+        opacity: 1;
+    }
 </style>
