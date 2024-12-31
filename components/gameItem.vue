@@ -9,6 +9,8 @@
 </template>
   
   <script>
+  import axios from 'axios';
+
   export default {
     data(){
         return{
@@ -40,7 +42,7 @@
       },
       async fetchGGDealsData() {
         try {
-          const response = await this.$axios.$get(`/api/ggdeals/games/${this.game.appid}/prices`);
+          const response = await axios.get(`/api/ggdeals/games/${this.game.appid}/prices`);
           // Traiter et afficher les données reçues
           this.game.ggDealsData = response;
           // Émettre un événement pour informer le composant parent

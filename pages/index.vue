@@ -20,6 +20,7 @@
 import StyleSheet from '~/components/StyleSheet';
 import ArticleElem from '~/components/article';
 import Entete from '~/components/entete';
+import axios from 'axios';
 
 export default {
   components: {
@@ -36,7 +37,7 @@ export default {
   },
   async mounted() {
     try {
-      const response = await this.$axios.get('http://localhost:3001'); // Modifier l'URL si nécessaire
+      const response = await axios.get('http://localhost:3001'); // Modifier l'URL si nécessaire
       this.jsonData = response.data;
     } catch (error) {
       console.error('Erreur lors de la récupération des données JSON :', error);

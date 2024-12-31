@@ -54,7 +54,7 @@
 import StyleSheet from '~/components/StyleSheet';
 import Entete from '~/components/Entete';
 import draggable from 'vuedraggable';
-import GameItem from '~/components/gameItem.vue';
+import axios from 'axios';
 
 export default {
   data() {
@@ -250,7 +250,7 @@ export default {
     try {
       const steamID = '76561198121075558';
       const apiKey = '7AEBB6C629BC5A5CE294B96F09881111';
-      const response = await this.$axios.$get(`/api/steam/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamID}&format=json&include_appinfo=1`);
+      const response = await axios.get(`/api/steam/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamID}&format=json&include_appinfo=1`);
       console.log('Réponse du proxy:', response);
     } catch (error) {
       console.error('Erreur lors de l\'appel au proxy:', error);
@@ -262,7 +262,7 @@ export default {
     const apiKey = '7AEBB6C629BC5A5CE294B96F09881111';
 
     // Récupération des jeux Steam
-    const steamResponse = await this.$axios.$get(
+    const steamResponse = await axios.get(
       `/api/steam/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamID}&format=json&include_appinfo=1`
     );
 
@@ -274,7 +274,7 @@ export default {
       //   const chunk = games.slice(i, i + 10);
       //   await Promise.all(chunk.map(async (game) => {
       //     try {
-      //       const tagResponse = await this.$axios.$get(
+      //       const tagResponse = await axios.get(
       //         `/api/store/appdetails?appids=${game.appid}` // Utilisez le proxy ici
       //       );
 
