@@ -13,42 +13,47 @@
           <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
         </select>
 
-         <!-- Sélection des tags -->
       <select v-model="selectedTag" @change="updateTable">
         <option value="tous">Tous les tags</option>
         <option v-for="tag in TagsList" :key="tag" :value="tag">{{ tag }}</option>
       </select>
       </div>
-  
-    <!-- Filtre pour sélectionner ce qu'on affiche -->
-      <div class="posfix checkboxTableauCalculator  text-white ">
-      <div class="absBundle nopad affichageWrapChoix" @click="toggleWrapChoix">
-        <p class="bg-green-500 p-5">Plus d'options</p>
-      </div>
-      <div class="wrapChoix bg-gray-900 grid p-10" v-show="isWrapChoixVisible">
-        <!-- Checkbox -->
-        <select v-model="selectedPlateforme" @change="filterTables">
-          <option value="tous">toutes les plateformes</option>
-          <option v-for="plateforme in plateformes" :key="plateforme" :value="plateforme">{{ plateforme }}</option>
-        </select>
-    
-        <select v-model="selectedYear" @change="filterTables">
-          <option value="tous">toutes les années</option>
-          <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-        </select>
-    
-        <div  v-for="column in columnsCreate" :key="column[0]">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" :id="'cbx-' + column[0]" class="inp-cbx" v-model="columnVisibility[column[0]]" @click="toggleColumn(column[0])" style="display:none"/>
-            <label :for="'cbx-' + column[0]" class="cbx">
-              <span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9"> <polyline points="1 5 4 8 11 1"></polyline></svg></span>
-              <span class="label-text">{{ column[1] }}</span>
-            </label>
-          </div>
-        </div>
 
-      </div>
-    </div>
+      <!-- <MoreOptions
+        :options="{
+          plateformes,
+          years,
+          TagsList,
+          selectedPlateforme,
+          selectedYear,
+          selectedTag,
+          columnVisibility,
+        }"
+        @filter-tables="filterTables"
+        @filter-by-tag="filterByTag"
+        @hide-all-elements="hideAllElements"
+        @selection-change="handleSelectionChange"
+      />
+  
+      <MoreOptions
+        :options="{
+          plateformes,
+          years,
+          TagsList,
+          selectedPlateforme,
+          selectedYear,
+          selectedTag,
+          columnVisibility,
+          columnsCreate,
+          showTableInOne,
+        }"
+        @toggle-column="toggleColumn"
+        @toggle-display="toggleDisplayMode"
+        @filter-tables="filterTables"
+        @filter-by-tag="filterByTag"
+        @hide-all-elements="hideAllElements"
+        @selection-change="handleSelectionChange"
+      /> -->
   </div>
     
     <table v-if="columnVisibility.tableau" border="1"  class="noborder p-5 justify-center max-w-screen-2xl mx-auto p-5 text-white">
@@ -143,10 +148,15 @@
 <script>
 import { saveData, loadData } from '~/data/dataHandler';
 import statsMixin from '~/plugins/statsMixin.js';
+import tableauMixin from '~/plugins/tableauMixin.js';
 import filtersMixin from '~/plugins/filtersMixin.js';
+import MoreOptions from './moreOptions.vue';
 
 export default {
-  mixins: [statsMixin,filtersMixin],
+  mixins: [statsMixin,filtersMixin,tableauMixin],
+  components: {
+    MoreOptions,
+  },
   data() {
     return {
         monthlyTotals: {}, // Initialisation de monthlyTotals

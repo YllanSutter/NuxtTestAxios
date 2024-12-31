@@ -10,6 +10,7 @@
         selectedMonth,
         selectedYear,
         selectedTag,
+        columnVisibility,
         searchText,
       }"
       @filter-tables="filterTables"
@@ -32,6 +33,8 @@
         columnsCreate,
         showTableInOne,
       }"
+      @toggle-column="toggleColumn"
+      @toggle-display="toggleDisplayMode"
       @filter-tables="filterTables"
       @filter-by-tag="filterByTag"
       @hide-all-elements="hideAllElements"
@@ -39,7 +42,8 @@
     />
 
     <!-- Tableau pour afficher le total de tous les totaux -->
-    <table v-if="!columnVisibility.UncheckAll" class="justify-center max-w-screen-2xl mx-auto p-5 text-white selectableTable">
+     <!-- Tableau pour afficher le total de tous les totaux -->
+     <table v-if="!columnVisibility.UncheckAll" class="justify-center max-w-screen-2xl mx-auto p-5 text-white selectableTable">
       <thead>
         <tr>
           <th>Totaux</th>
@@ -210,6 +214,7 @@
       <button @click="addTable" class="text-white button justify-center p-10 text-center w-full">
         Ajouter un tableau
       </button>
+    
     </div>
   </template>
   
@@ -218,14 +223,14 @@
   import draggable from 'vuedraggable';
   import { saveData, loadData } from '~/data/dataHandler';
   import filtersMixin from '~/plugins/filtersMixin.js';
-  import MoreOptions from './moreOptions.vue'
-
+  import tableauMixin from '~/plugins/tableauMixin.js';
+  import MoreOptions from './moreOptions.vue';
   
   export default {
-  mixins: [filtersMixin],
+  mixins: [filtersMixin,tableauMixin],
     components: {
       draggable, // Ajoutez le composant vuedraggable
-      MoreOptions
+      MoreOptions,
     },
     data() {
       return {
@@ -279,6 +284,12 @@
           ['showTag', 'Tags'],
           ['Ratio', 'Ratio'],
         ],
+        calculations: {
+          calculateGrandTotalPrixPaye: this.calculateGrandTotalPrixPaye,
+          totalNumberOfGamesForVisibleTables: this.totalNumberOfGamesForVisibleTables,
+          calculateGrandTotal: this.calculateGrandTotal,
+          ratio: this.ratio,
+        },
         columnCreateVisibility: this.generateColumnVisibilityObject(['showPrixPaye', 'showPrixBasMarche', 'showPrixBas', 'showPrixHorsSoldes', 'showHeuresJouees', 'showTag']),
         isWrapChoixVisible: false,
         showElementsVisibleAll: true,

@@ -1,10 +1,10 @@
 <template>
-    <div  :class="[options.columnsCreate ? 'posfix checkboxTableauCalculator text-white' : '']">
+    <div  :class="[options.columnsCreate ? 'posfix checkboxTableauCalculator text-white' : 'test']">
       <div v-if="options.columnsCreate" class="absBundle nopad affichageWrapChoix" @click="toggleWrapChoix">
         <p class="bg-green-500 p-5">Plus d'options</p>
       </div>
       
-      <div  :class="[options.columnsCreate ? 'wrapChoix bg-gray-900 grid p-10' : 'noborder p-5 justify-center max-w-screen-2xl mx-auto p-5 text-white text-center']" v-show="isWrapChoixVisible">
+      <div :class="[options.columnsCreate ? 'wrapChoix bg-gray-900 grid p-10' : 'noborder p-5 justify-center max-w-screen-2xl mx-auto p-5 text-white text-center forceshow']" v-show="isWrapChoixVisible || !options.columnsCreate">
         <select v-if="options.plateformes" v-model="localSelectedPlateforme" @change="handleSelection('Plateforme', localSelectedPlateforme)">
           <option value="tous">toutes les plateformes</option>
           <option v-for="plateforme in options.plateformes" :key="plateforme" :value="plateforme">{{ plateforme }}</option>
@@ -30,7 +30,12 @@
         />
         <div v-if="options.columnsCreate" v-for="column in options.columnsCreate" :key="column[0]">
           <div class="checkbox-wrapper">
-            <input type="checkbox" :id="'cbx-' + column[0]" class="inp-cbx" v-model="localColumnVisibility[column[0]]" @change="toggleColumn(column[0])" style="display:none"/>
+            <input type="checkbox" 
+                :id="'cbx-' + column[0]" 
+                class="inp-cbx" 
+                v-model="localColumnVisibility[column[0]]" 
+                @change="$emit('toggle-column', column[0])" 
+                style="display:none"/>
             <label :for="'cbx-' + column[0]" class="cbx">
               <span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9">
                 <polyline points="1 5 4 8 11 1"></polyline>
@@ -40,7 +45,7 @@
           </div>
         </div>
         <div v-if="options.showTableInOne !== undefined" class="checkbox-wrapper">
-          <input type="checkbox" id="tab-cbx-2" class="inp-cbx" v-model="localShowTableInOne" @change="toggleDisplayMode" style="display:none"/>
+          <input type="checkbox" id="tab-cbx-2" class="inp-cbx" v-model="localShowTableInOne" @change="$emit('toggle-display')" style="display:none"/>
           <label class="cbx" for="tab-cbx-2">
             <span class="checkbox-custom"><svg width="12px" height="9px" viewBox="0 0 12 9"><polyline points="1 5 4 8 11 1"></polyline></svg></span>
             <span class="label-text">Un seul tableau</span>
@@ -111,19 +116,12 @@
       handleSelection(type, value) {
         this.$emit('selection-change', { type, value })
       },
-      toggleColumn(column) {
-        this.localColumnVisibility[column] = !this.localColumnVisibility[column]
-        this.$emit('selection-change', { type: 'ColumnVisibility', value: this.localColumnVisibility })
-      },
-      toggleDisplayMode() {
-        this.localShowTableInOne = !this.localShowTableInOne
-        this.$emit('selection-change', { type: 'ShowTableInOne', value: this.localShowTableInOne })
-      },
       hideAllElements() {
         this.localHideAllElements = !this.localHideAllElements
         this.$emit('selection-change', { type: 'HideAllElements', value: this.localHideAllElements })
       }
-    }
+    },
+    
   }
   </script>
   
